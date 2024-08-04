@@ -9,9 +9,11 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "deploy": "cdk synth && cdk deploy --all"
+    "deploy": "cdk synth && cdk deploy --all",
+    "authtest": "jest --verbose ./__test__/authflow.test.ts"
   },
   "devDependencies": {
+    "@types/chance": "^1.1.6",
     "@types/jest": "^29.5.12",
     "@types/node": "20.14.9",
     "aws-cdk": "2.150.0",
@@ -21,11 +23,14 @@
     "typescript": "~5.5.3"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.622.0",
     "@aws-sdk/client-dynamodb": "^3.622.0",
     "@aws-sdk/util-dynamodb": "^3.622.0",
     "@types/aws-lambda": "^8.10.142",
     "aws-cdk-lib": "2.150.0",
+    "chance": "^1.1.12",
     "constructs": "^10.0.0",
+    "dotenv": "^16.4.5",
     "esbuild": "^0.23.0",
     "source-map-support": "^0.5.21",
     "ulidx": "^2.4.0"
