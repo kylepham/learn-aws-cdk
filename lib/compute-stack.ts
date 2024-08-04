@@ -10,7 +10,7 @@ interface ComputeStackProps extends cdk.StackProps {
   userTable: Table;
 }
 
-export class ComputerStack extends cdk.Stack {
+export class ComputeStack extends cdk.Stack {
   readonly addUserToTable: NodejsFunction;
 
   constructor(scope: Construct, id: string, props: ComputeStackProps) {
@@ -28,7 +28,7 @@ export class ComputerStack extends cdk.Stack {
     });
     func.addToRolePolicy(
       new iam.PolicyStatement({
-        actions: ["dynamo:PutItem"],
+        actions: ["dynamodb:PutItem"],
         resources: [props.userTable.tableArn as string],
       })
     );
