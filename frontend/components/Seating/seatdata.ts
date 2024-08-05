@@ -13,8 +13,8 @@ export const seatdata: SeatsType = {
 };
 
 export type SeatType = {
-  SeatID: string;
-  IsBooked: string; // Assuming IsBooked is a string as per your data. You might want to convert it to boolean.
+  SeatId: string;
+  isBooked: string; // Assuming isBooked is a string as per your data. You might want to convert it to boolean.
 };
 
 type ProcessedSeats = {
@@ -24,7 +24,7 @@ type ProcessedSeats = {
 export const processSeatsData = (fetchedSeats: SeatType[]): ProcessedSeats => {
   const processedSeats: ProcessedSeats = {};
   fetchedSeats.forEach((seat) => {
-    const row = seat.SeatID.slice(0, -1);
+    const row = seat.SeatId.slice(0, -1);
     if (!processedSeats[row]) {
       processedSeats[row] = [];
     }

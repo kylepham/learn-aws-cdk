@@ -5,24 +5,14 @@ import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface FlightSelectorProps {
   flights: {
     Origin: string;
     Destination: string;
-    FlightID: string;
+    FlightId: string;
     DepartureTime: string;
     ArrivalTime: string;
   }[];
@@ -36,12 +26,7 @@ export function FlightSelector(props: FlightSelectorProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[200px] justify-between"
-        >
+        <Button variant="outline" role="combobox" aria-expanded={open} className="w-[200px] justify-between">
           {value ? value : "Select Your Flight"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -56,16 +41,14 @@ export function FlightSelector(props: FlightSelectorProps) {
                 value={flight.Origin + " to " + flight.Destination}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
-                  props.getFlightId(flight.FlightID);
+                  props.getFlightId(flight.FlightId);
                   setOpen(false);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === flight.Origin + " to " + flight.Destination
-                      ? "opacity-100"
-                      : "opacity-0"
+                    value === flight.Origin + " to " + flight.Destination ? "opacity-100" : "opacity-0"
                   )}
                 />
                 {flight.Origin + " to " + flight.Destination}

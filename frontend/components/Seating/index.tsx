@@ -86,7 +86,7 @@ interface SeatSelectionProps {
   flights: {
     Origin: string;
     Destination: string;
-    FlightID: string;
+    FlightId: string;
     DepartureTime: string;
     ArrivalTime: string;
   }[];
@@ -187,11 +187,11 @@ const SeatSelection = (props: SeatSelectionProps) => {
   const rows = Object.keys(seats).map((rowNumber) => (
     <ol className="flex flex-row flex-nowrap justify-start" key={rowNumber}>
       {seats[rowNumber].map((seat) => (
-        <li className="seat" key={seat.SeatID}>
+        <li className="seat" key={seat.SeatId}>
           <Seat
-            seatNumber={seat.SeatID}
-            isBooked={seat.IsBooked === "True"}
-            onSeatClick={() => handleSeatClick(seat.SeatID)}
+            seatNumber={seat.SeatId}
+            isBooked={seat.isBooked === "true"}
+            onSeatClick={() => handleSeatClick(seat.SeatId)}
           />
         </li>
       ))}
@@ -227,11 +227,7 @@ const SeatSelection = (props: SeatSelectionProps) => {
                 <Button
                   className=""
                   type="submit"
-                  disabled={
-                    selectedSeats.length > 2 ||
-                    selectedSeats.length < 1 ||
-                    !flightId
-                  }
+                  disabled={selectedSeats.length > 2 || selectedSeats.length < 1 || !flightId}
                 >
                   {isSubmiting ? "Submitting..." : "Submit"}
                 </Button>
