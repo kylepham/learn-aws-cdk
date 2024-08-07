@@ -2,6 +2,10 @@
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 
+import * as dotenv from "dotenv";
+import * as path from "path";
+dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
+
 import { DatabaseStack } from "../lib/database-stack";
 import { ComputeStack } from "../lib/compute-stack";
 import { AuthStack } from "../lib/auth-stack";

@@ -19,6 +19,7 @@ export class ComputeStack extends cdk.Stack {
   readonly addUserToTable: NodejsFunction;
   readonly confirmBookingLambdaIntegration: LambdaIntegration;
   readonly registerBooking: NodejsFunction;
+  readonly sendConfirmBookingEmail: NodejsFunction;
 
   constructor(scope: Construct, id: string, props: ComputeStackProps) {
     super(scope, id, props);
@@ -26,6 +27,7 @@ export class ComputeStack extends cdk.Stack {
     this.addUserToTable = this._addUserToTable(props);
     this.confirmBookingLambdaIntegration = this._confirmBookingLambdaIntegration(props);
     this.registerBooking = this._registerBooking(props);
+    this.sendConfirmBookingEmail = this._sendConfirmBookingEmail(props);
 
     // reconstruct eventbus object & add rules (avoid cyclic reference)
     const eventBus = EventBus.fromEventBusArn(this, "sad", props.flightBookingEventBusArn);
@@ -35,7 +37,7 @@ export class ComputeStack extends cdk.Stack {
         source: ["bookFlight"],
         detailType: ["flightBooked"],
       },
-      targets: [new LambdaFunction(this.registerBooking)],
+      targets: [new LambdaFunction(this.registerBooking), new LambdaFunction(this.sendConfirmBookingEmail)],
     });
   }
 
@@ -84,6 +86,26 @@ export class ComputeStack extends cdk.Stack {
       new iam.PolicyStatement({
         actions: ["dynamodb:*"],
         resources: [props.seatTable.tableArn],
+      })
+    );
+
+    return func;
+  }
+
+  _sendConfirmBookingEmail(props: ComputeStackProps) {
+    const func = new NodejsFunction(this, "sendConfirmBookingEmailFunction", {
+      functionName: "sendConfirmBookingEmailFunction",
+      runtime: Runtime.NODEJS_18_X,
+      handler: "handler",
+      entry: path.join(__dirname, `../functions/send-confirm-booking-email/index.ts`),
+      environment: {
+        AWS_VERIFIED_SENDER_EMAIL: process.env.AWS_VERIFIED_SENDER_EMAIL ?? "",
+      },
+    });
+    func.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:Query", "ses:SendTemplatedEmail"],
+        resources: [props.userTable.tableArn, `${props.userTable.tableArn}/index/*`, `arn:aws:ses:us-west-1:*:*`],
       })
     );
 
