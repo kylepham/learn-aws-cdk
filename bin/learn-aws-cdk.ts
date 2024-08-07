@@ -7,6 +7,7 @@ import { ComputeStack } from "../lib/compute-stack";
 import { AuthStack } from "../lib/auth-stack";
 import { APIStack } from "../lib/api-stack";
 import { EventBridgeStack } from "../lib/event-bridge-stack";
+import { SESStack } from "../lib/ses-stack";
 
 const app = new cdk.App();
 const eventBridgeStack = new EventBridgeStack(app, "EventBridgeStack");
@@ -21,3 +22,4 @@ const apiStack = new APIStack(app, "APIStack", {
   confirmBookingLambdaIntegration: computeStack.confirmBookingLambdaIntegration,
   userPool: authStack.userPool,
 });
+const sesStack = new SESStack(app, "SESStack");
